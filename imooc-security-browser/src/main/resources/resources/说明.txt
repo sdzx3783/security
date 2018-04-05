@@ -1,0 +1,3 @@
+当使用的项目不是web项目时,浏览器访问的路径就是resources下的资源（maven package类型是jar）
+
+当使用的项目是web项目时,浏览器访问的路径就是webapp下的资源（maven package类型是war）
