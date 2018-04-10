@@ -19,7 +19,7 @@ public class TimeInterceptor implements HandlerInterceptor {
 		System.out.println("afterCompletion");
 		long start=(long) request.getAttribute("startTime");
 		System.out.println("耗时： "+(new Date().getTime()-start));
-		System.out.println("ex is"+ex);
+		System.out.println("ex is "+ex);
 	}
 
 	@Override

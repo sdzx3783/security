@@ -22,7 +22,7 @@ public class MyUserDetailsService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		logger.info("登录用户名:"+username);
-		return new SysUser(username, passwordEncoder.encode("123456"));
+		return new SysUser(username, passwordEncoder.encode("1"));
 
 	}
 

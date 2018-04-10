@@ -44,12 +44,22 @@
 	     <artifactId>javax.servlet-api</artifactId>
 	     <scope>provided</scope>
 	</dependency>
+	
 	<!-- jsp -->
-	<dependency>
+	<!-- <dependency>
 		<groupId>javax.servlet</groupId>
 		<artifactId>jstl</artifactId>
-	</dependency>
+		<version>1.2</version>
+	</dependency> -->
+	<!-- https://mvnrepository.com/artifact/taglibs/standard -->
+	<!-- <dependency>
+	    <groupId>taglibs</groupId>
+	    <artifactId>standard</artifactId>
+	    <version>1.1.2</version>
+	</dependency> -->
+	
   </dependencies>
+  
   <!--  为了支持jsp访问加的依赖  jsp方便回显错误信息 end -->
   
   <!-- 打包插件 -->

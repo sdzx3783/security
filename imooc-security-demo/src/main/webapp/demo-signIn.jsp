@@ -1,9 +1,11 @@
+<%@page import="com.imooc.security.core.validate.code.ValidateCodeException"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@page import="org.springframework.security.authentication.AuthenticationServiceException"%>
 <%@page import="org.springframework.security.authentication.AccountExpiredException"%>
 <%@page import="org.springframework.security.authentication.DisabledException"%>
 <%@page import="org.springframework.security.authentication.LockedException"%>
+<%@page import="com.imooc.security.core.validate.code.ValidateCodeException"%>
 <%@page import="org.springframework.security.authentication.BadCredentialsException"%>
 <%@page import="java.util.Enumeration"%>
 <%@page import="org.springframework.security.web.WebAttributes"%>
@@ -49,6 +51,8 @@
 					else if(loginError instanceof AuthenticationServiceException){
 						AuthenticationServiceException ex=(AuthenticationServiceException)loginError;
 						msg=ex.getMessage();
+					}else if(loginError instanceof ValidateCodeException){
+						msg="验证码错误";
 					}
 					else{
 						msg=loginError.toString();

@@ -1,7 +1,7 @@
 package com.imooc.security.core.properties;
 
 public class ImageCodeProperties {
-	private int width=67;
+	private int width=80;
 	private int height=23;
 	private int length=4;
 	private int expireIn=60;

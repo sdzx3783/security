@@ -4,5 +4,6 @@
 .project
 .externalToolBuilders/
 .settings/
+.gitignore
 bin
 target
