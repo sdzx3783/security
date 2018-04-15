@@ -1,6 +1,14 @@
 package thread;
 
 public class TaskResult {
+	public String getTaskName() {
+		return taskName;
+	}
+
+	public void setTaskName(String taskName) {
+		this.taskName = taskName;
+	}
+
 	public static final int SUCCESS=1;
 	public static final int FAIL=0;
 	private Object data;
