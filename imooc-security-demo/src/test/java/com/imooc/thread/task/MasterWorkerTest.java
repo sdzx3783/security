@@ -23,7 +23,7 @@ public class MasterWorkerTest {
 		String taskName="流程提交任务";
 		List<Task> list=new ArrayList<>();
 		List<TaskResult> taskResults=new ArrayList<>();
-		for(int i=1;i<500;i++) {
+		for(int i=1;i<50;i++) {
 			BpmSubmitTask t=new BpmSubmitTask(i+"", taskName);
 			list.add(t);
 			master.execute(t);
@@ -49,6 +49,6 @@ public class MasterWorkerTest {
 		
 		
 		//阻塞主线程 单元测试主线程关闭 会导致子线程也关闭
-		Thread.sleep(300000);
+		//Thread.sleep(300000);
 	}
 }

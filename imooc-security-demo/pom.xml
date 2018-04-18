@@ -76,8 +76,15 @@
 		      </goals>  
 		    </execution>  
 		  </executions>  
-	</plugin>  
-	</plugins>
-	<finalName>demo</finalName>
+	</plugin>
+	<plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-war-plugin</artifactId>
+		<configuration>
+		<failOnMissingWebXml>false</failOnMissingWebXml>
+		</configuration>
+	</plugin>
+   </plugins>
+   <finalName>demo</finalName>
 </build>
 </project>

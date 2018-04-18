@@ -29,7 +29,8 @@ public class ThreadPoolWorker {
 	private static void execute(Runnable task) {
 		executorService.execute(task);
 	}
-	public static void main(String[] args) {
+	//注释掉main方法是为了maven 打war包
+	/*public static void main(String[] args) {
 		List<Future<TaskResult>> list=new ArrayList<>();
 		for(int i=0;i<=30;i++) {
 			Task task = new Task(i+"", "task_"+i);
@@ -55,7 +56,7 @@ public class ThreadPoolWorker {
 			}
 			System.out.println(taskResult);
 		}
-	}
+	}*/
 	
 }
 

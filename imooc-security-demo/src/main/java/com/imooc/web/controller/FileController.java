@@ -29,8 +29,8 @@ public class FileController {
 		System.out.println(file.getName());
 		System.out.println(file.getOriginalFilename());
 		System.out.println(file.getSize());
-		String folder="D:/imooc/imooc-security-demo/src/main/java/com/imooc/web/controller";
-		File localfile=new File(folder,new Date().getTime()+".text");
+		String folder="E:/imooc/imooc-security-demo/src/main/java/com/imooc/web/controller";
+		File localfile=new File(folder,new Date().getTime()+".txt");
 		file.transferTo(localfile);
 		
 		return new FileInfo(localfile.getAbsolutePath());
@@ -38,7 +38,7 @@ public class FileController {
 	
 	@GetMapping("/{id}")
 	public void download(@PathVariable String id,HttpServletRequest request,HttpServletResponse response){
-		String folder="D:/imooc/imooc-security-demo/src/main/java/com/imooc/web/controller";
+		String folder="E:/imooc/imooc-security-demo/src/main/java/com/imooc/web/controller";
 		try {
 			InputStream inputStream=new FileInputStream(new File(folder,id+".text"));
 			ServletOutputStream outputStream = response.getOutputStream();

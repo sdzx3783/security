@@ -34,7 +34,7 @@ public class UserControllerTest {
 	public void setup(){
 		mockMvc=MockMvcBuilders.webAppContextSetup(wac).build();
 	}
-	@Test
+	//@Test
 	public void whenQuerySuccess() throws Exception{
 		String result=mockMvc.perform(MockMvcRequestBuilders.get("/user")
 				.contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -50,7 +50,7 @@ public class UserControllerTest {
 		
 	}
 	
-	@Test
+	//@Test
 	public void whenGenInfoSuccess() throws Exception{
 		String result=mockMvc.perform(MockMvcRequestBuilders.get("/user/1")
 				.contentType(MediaType.APPLICATION_JSON_UTF8))
@@ -60,14 +60,14 @@ public class UserControllerTest {
 		System.out.println(result);
 	}
 	 
-	@Test
+	//@Test
 	public void whenGenInfoFail() throws Exception{
 		mockMvc.perform(MockMvcRequestBuilders.get("/user/a")
 				.contentType(MediaType.APPLICATION_JSON_UTF8))
 		.andExpect(status().is4xxClientError());
 	}
 	
-	@Test
+	//@Test
 	public void whenCreateSuccess() throws Exception{
 		Date date=new Date();
 		String content="{\"username\":\"tom\",\"password\":null,\"birthday\":"+date.getTime()+"}";
@@ -80,7 +80,7 @@ public class UserControllerTest {
 		.andReturn().getResponse().getContentAsString();
 		System.out.println(re);
 	}
-	@Test
+	//@Test
 	public void whenUpdateSuccess() throws UnsupportedEncodingException, Exception{
 		Date date=new Date(LocalDateTime.now().plusYears(1).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
 		String content="{\"username\":\"tom\",\"password\":null,\"birthday\":"+date.getTime()+"}";
@@ -93,7 +93,7 @@ public class UserControllerTest {
 		System.out.println(re);
 	}
 	
-	@Test
+	//@Test
 	public void whenDeleteSuccess() throws Exception{
 		mockMvc.perform(MockMvcRequestBuilders.delete("/user/1")
 				.contentType(MediaType.APPLICATION_JSON_UTF8))

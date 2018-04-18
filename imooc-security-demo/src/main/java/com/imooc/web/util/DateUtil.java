@@ -494,10 +494,4 @@ public class DateUtil
     return ca.getTime();
   }
   
-  public static void main(String[] args)
-  {
-    Date start = new Date();
-    Date end = new Date(start.getTime() + 10000L);
-    System.out.println(daysBetween(start, end));
-  }
 }
