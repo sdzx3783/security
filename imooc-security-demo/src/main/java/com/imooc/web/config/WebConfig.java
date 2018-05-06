@@ -3,6 +3,8 @@ package com.imooc.web.config;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.FilterConfig;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -11,6 +13,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import com.imooc.web.controller.TimeInterceptor;
+import com.imooc.web.filter.EncodingFilter;
 import com.imooc.web.filter.TimeFilter;
 
 @Configuration
@@ -27,6 +30,16 @@ public class WebConfig extends WebMvcConfigurerAdapter{
 		FilterRegistrationBean filterRegistrationBean=new FilterRegistrationBean();
 		TimeFilter timeFilter=new TimeFilter();
 		filterRegistrationBean.setFilter(timeFilter);
+		List<String> urls=new ArrayList<>();
+		urls.add("/*");
+		filterRegistrationBean.setUrlPatterns(urls);
+		return filterRegistrationBean;
+	}
+	@Bean
+	public FilterRegistrationBean encodingFilter(){
+		FilterRegistrationBean filterRegistrationBean=new FilterRegistrationBean();
+		EncodingFilter encodingFilter=new EncodingFilter();
+		filterRegistrationBean.setFilter(encodingFilter);
 		List<String> urls=new ArrayList<>();
 		urls.add("/*");
 		filterRegistrationBean.setUrlPatterns(urls);

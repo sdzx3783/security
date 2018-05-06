@@ -9,7 +9,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.social.security.SpringSocialConfigurer;
 
 import com.imooc.security.core.properties.SecurityProperties;
 import com.imooc.security.core.validate.code.ValidateCodeFilter;
@@ -25,16 +27,19 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter{
 	private AuthenticationSuccessHandler imoocAuthenticationSuccessHandler;
 	@Autowired
 	private AuthenticationFailureHandler imoocAuthenticationFailureHandler;
+	@Autowired
+	private SpringSocialConfigurer immocSpringSocialConfigurer;
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		ValidateCodeFilter codeFilter=new ValidateCodeFilter();
 		codeFilter.setAuthenticationFailureHandler(imoocAuthenticationFailureHandler);
 		codeFilter.setSecurityProperties(securityProperties);
 		codeFilter.afterPropertiesSet();
+		http.apply(immocSpringSocialConfigurer); 
 		http.addFilterBefore(codeFilter, UsernamePasswordAuthenticationFilter.class)
 		.formLogin()
 		//.loginPage("/imooc-signIn.jsp")
-		.loginPage("/authentication/require")
+		.loginPage("/authentication/require")//跟LoginUrlAuthenticationEntryPoint有关，Oa项目配置了一个MultipleAuthenticationLoginEntry
 		.loginProcessingUrl("/authentication/form")
 		.successHandler(imoocAuthenticationSuccessHandler)
 		.failureHandler(imoocAuthenticationFailureHandler)
@@ -42,7 +47,7 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter{
 			.and()
 			.authorizeRequests()
 			.antMatchers("/authentication/require","/code/image",
-					securityProperties.getBrowser().getLoginPage()).permitAll()
+					securityProperties.getBrowser().getLoginPage(),"/platform/**","/styles/**","/js/**").permitAll()
 			.anyRequest()
 			.authenticated()
 			.and()

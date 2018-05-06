@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.sz.model.Test">
+	<resultMap id="Test" type="com.sz.model.Test">
+		<id property="id" column="ID" jdbcType="NUMERIC"/>
+		<result property="name" column="name" jdbcType="VARCHAR"/>
+		<result property="age" column="age" jdbcType="INTEGER"/>
+		<result property="birthday" column="birthday" jdbcType="DATE"/>
+		<result property="ctime" column="ctime" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	
+
+	<sql id="columns">
+		id,name,age,birthday,ctime
+	</sql>
+	
+	
+	<sql id="dynamicWhere">
+		<where>
+			<if test="@Ognl@isNotEmpty(id)"> AND ID  =#{id} </if>
+			<if test="@Ognl@isNotEmpty(name)"> AND name  like #{name}  </if>
+			<if test="@Ognl@isNotEmpty(birthday)"> AND birthday =#{birthday,jdbcType=DATE} </if>
+			<if test="@Ognl@isNotEmpty(beginbirthday)"> AND birthday >=#{beginbirthday,jdbcType=DATE} </if>
+			<if test="@Ognl@isNotEmpty(endbirthday)"> AND birthday <![CDATA[ <=#{endbirthday,jdbcType=TIMESTAMP}]]> </if>
+			<if test="@Ognl@isNotEmpty(beginctime)"> AND ctime >=#{beginctime,jdbcType=DATE} </if>
+			<if test="@Ognl@isNotEmpty(endctime)"> AND ctime <![CDATA[ <=#{endtime,jdbcType=TIMESTAMP}]]> </if>
+		</where>
+	</sql>
+
+	<insert id="add" parameterType="com.sz.model.Test">
+		INSERT INTO Test
+		(ID,name,age,birthday,ctime)
+		VALUES
+		(#{id,jdbcType=NUMERIC}, #{name,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER}, #{birthday,jdbcType=DATE}, #{ctime,jdbcType=TIMESTAMP})
+	</insert>
+	
+	<delete id="delById" parameterType="java.lang.Long">
+		DELETE FROM Test 
+		WHERE
+		ID=#{id}
+	</delete>
+	
+	<update id="update" parameterType="com.sz.model.Test">
+		update Test SET
+		name=#{name,jdbcType=VARCHAR},
+		age=#{age,jdbcType=INTEGER},
+		birthday=#{birthday,jdbcType=DATE},
+		ctime=#{ctime,jdbcType=TIMESTAMP}
+		WHERE
+		ID=#{id}
+	</update>
+		    
+	<select id="getById" parameterType="java.lang.Long" resultMap="Test">
+		SELECT <include refid="columns"/>
+		FROM Test
+		WHERE
+		ID=#{id}
+	</select>
+	
+	<select id="getAll" resultMap="Test">
+		SELECT <include refid="columns"/>
+		FROM Test   
+		<include refid="dynamicWhere" />
+		<if test="@Ognl@isNotEmpty(orderField)">
+		order by ${orderField} ${orderSeq}
+		</if>
+		<if test="@Ognl@isEmpty(orderField)">
+		order by ID  desc
+		</if>
+	</select>
+	
+	
+</mapper>

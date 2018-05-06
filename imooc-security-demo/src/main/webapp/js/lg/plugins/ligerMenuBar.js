@@ -1,9 +1,9 @@
 ﻿/**
-* jQuery ligerUI 1.1.9
+* jQuery ligerUI 1.3.2
 * 
 * http://ligerui.com
 *  
-* Author daomi 2012 [ gd_star@163.com ] 
+* Author daomi 2015 [ gd_star@163.com ] 
 * 
 */
 (function ($)
@@ -85,10 +85,10 @@
             {
                 ditem.hover(function ()
                 {
-                   // $(this).addClass("l-panel-btn-over");
+                    $(this).addClass("l-panel-btn-over");
                 }, function ()
                 {
-                   // $(this).removeClass("l-panel-btn-over");
+                    $(this).removeClass("l-panel-btn-over");
                 });
                 $(".l-menubar-item-down", ditem).remove();
             }

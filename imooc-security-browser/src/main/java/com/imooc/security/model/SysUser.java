@@ -4,8 +4,9 @@ import java.util.Collection;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.social.security.SocialUserDetails;
 
-public class SysUser implements UserDetails {
+public class SysUser implements UserDetails,SocialUserDetails{
 
 	private static final long serialVersionUID = -6529304229285809133L;
 
@@ -52,6 +53,12 @@ public class SysUser implements UserDetails {
 	@Override
 	public boolean isEnabled() {
 		return true;
+	}
+
+	@Override
+	public String getUserId() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

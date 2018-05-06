@@ -1,9 +1,9 @@
 ﻿/**
-* jQuery ligerUI 1.1.9
+* jQuery ligerUI 1.3.2
 * 
 * http://ligerui.com
 *  
-* Author daomi 2012 [ gd_star@163.com ] 
+* Author daomi 2015 [ gd_star@163.com ] 
 * 
 */
 (function ($)
@@ -17,6 +17,7 @@
         width: 120,
         top: 0,
         left: 0,
+        cls : null,
         items: null,
         shadow: true
     };
@@ -50,23 +51,21 @@
             g.menu = g.createMenu();
             g.element = g.menu[0];
             g.menu.css({ top: p.top, left: p.left, width: p.width });
+            p.cls && g.menu.addClass(p.cls);
 
             p.items && $(p.items).each(function (i, item)
             {
                 g.addItem(item);
             });
 
-            g.createIframe(g.menu);
             $(document).bind('click.menu', function ()
             {
-          
                 for (var menuid in g.menus)
                 {
                     var menu = g.menus[menuid];
                     if (!menu) return;
                     menu.hide();
                     if (menu.shadow) menu.shadow.hide();
-                    g.hideIframe(menu);
                 }
             });
             g.set(p);
@@ -85,7 +84,6 @@
             }
             menu.show();
             g.updateShadow(menu);
-            g.showIframe(menu);
         },
         updateShadow: function (menu)
         {
@@ -109,20 +107,6 @@
             g.hideAllSubMenu(menu);
             menu.hide();
             g.updateShadow(menu);
-          
-            g.hideIframe(menu);
-        },
-        hideIframe:function(menu){
-        	var memuId=menu.attr("memuId");
-        	$("iframe.l_menu_frame[iframeId='"+memuId+"']").hide();
-        },
-        showIframe:function(menu){
-        	var memuId=menu.attr("memuId");
-        	var obj=$("iframe.l_menu_frame[iframeId='"+memuId+"']");
-       
-        	obj.show();
-        	obj.css({ top: menu.css("top"), left: menu.css("left") , width: menu.width()+2,height:menu.height()+5 });  
-        	
         },
         toggle: function ()
         {
@@ -133,14 +117,17 @@
         removeItem: function (itemid)
         {
             var g = this, p = this.options;
-            //$("> .l-menu-item[menuitemid=" + itemid + "]", g.menu.items).remove();
-            g.menu.items.find(".l-menu-item[ligeruimenutemid="+itemid+"]").remove();
-            
+            $("> .l-menu-item[menuitemid=" + itemid + "]", g.menu.items).remove();
         },
         setEnabled: function (itemid)
         {
             var g = this, p = this.options;
             $("> .l-menu-item[menuitemid=" + itemid + "]", g.menu.items).removeClass("l-menu-item-disable");
+        },
+        setMenuText : function(itemid,text)
+        {
+            var g = this, p = this.options;
+            $("> .l-menu-item[menuitemid=" + itemid + "] >.l-menu-item-text:first", g.menu.items).html(text);
         },
         setDisabled: function (itemid)
         {
@@ -174,7 +161,8 @@
             ditem.attr("ligeruimenutemid", ++g.menuItemCount);
             item.id && ditem.attr("menuitemid", item.id);
             item.text && $(">.l-menu-item-text:first", ditem).html(item.text);
-            item.icon && ditem.prepend('<div class="l-menu-item-icon "><img src="'+ item.icon+'" style="width:16px;height:16px;margin-top: 4px;margin-left: 4px;"/></div>');
+            item.icon && ditem.prepend('<div class="l-menu-item-icon l-icon-' + item.icon + '"></div>');
+            item.img && ditem.prepend('<div class="l-menu-item-icon"><img style="width:16px;height:16px;margin:2px;" src="' + item.img + '" /></div>');
             if (item.disable || item.disabled)
                 ditem.addClass("l-menu-item-disable");
             if (item.children)
@@ -192,7 +180,6 @@
                 {
                     g.addItem(this, newmenu);
                 });
-                g.createIframe(newmenu);
             }
             item.click && ditem.click(function ()
             {
@@ -206,39 +193,12 @@
             });
 
             var menuover = $("> .l-menu-over:first", menu);
-            ditem.hover(function (event)
+            ditem.hover(function ()
             {
-            	var x=event.clientX; 
-    			var y=event.clientY;  
-    			var documentHeight=document.body.clientHeight;
                 if ($(this).hasClass("l-menu-item-disable")) return;
                 var itemtop = $(this).offset().top;
                 var top = itemtop - menu.offset().top;
                 menuover.css({ top: top });
-                if(y>documentHeight-40){
-                	var allItems=$("> .l-menu-item", menu.items);
-                	for(var i=0;i<itemcount;i++){
-                		var nextItem=$(allItems[i]);
-                		if(nextItem.is(":hidden")){
-                			continue;
-                		}else{
-                			nextItem.hide();
-                			break;
-                		}
-                	}
-                	
-                }else if(y<menu.offset().top+30){
-                	var allItems=$("> .l-menu-item:hidden", menu.items);
-                	for(var i=itemcount;i>=0;i--){
-                		var prevItem=$(allItems[i]);
-                		if(prevItem.is(":hidden")){               			
-                			prevItem.show();
-                			break;
-                		}else{
-                			continue;
-                		}
-                	}
-                }
                 g.hideAllSubMenu(menu);
                 if (item.children)
                 {
@@ -272,19 +232,9 @@
                     var ligeruimenutemid = $(this).attr("ligeruimenutemid");
                     if (!ligeruimenutemid) return;
                     g.menus[ligeruimenutemid] && g.hide(g.menus[ligeruimenutemid]);
-                    //隐藏iframe
-                    g.hideIframe(g.menus[ligeruimenutemid]);
                 }
             });
             menu.showedSubMenu = false;
-        },
-        createIframe:function(menu){
-        	var iframeObj=$('<iframe  frameborder="0" class="l_menu_frame" style="position:absolute;z-index:1;display:none;"></iframe>');
-        	var memuId=menu.attr("memuId");
-        	
-        	iframeObj.css({left:menu.left,top:menu.top,width:menu.width()+2,height:menu.height()+5})
-        	iframeObj.attr("iframeId",memuId);
-        	iframeObj.appendTo('body');
         },
         createMenu: function (parentMenuItemID)
         {
@@ -307,8 +257,6 @@
                 g.menus[parentMenuItemID] = menu;
             else
                 g.menus[0] = menu;
-            
-            if (menu.attr("memuId") == undefined) menu.attr("memuId", new Date().getTime());
             return menu;
         }
     });
