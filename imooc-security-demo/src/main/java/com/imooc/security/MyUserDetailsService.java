@@ -15,7 +15,7 @@ import com.imooc.security.model.SysUser;
 @Service
 public class MyUserDetailsService implements UserDetailsService,SocialUserDetailsService {
 
-	private Logger logger=LoggerFactory.getLogger(getClass());
+	private Logger logger=LoggerFactory.getLogger(MyUserDetailsService.class);
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
@@ -31,5 +31,7 @@ public class MyUserDetailsService implements UserDetailsService,SocialUserDetail
 		logger.info("社交登录用户ID:"+userid);
 		return new SysUser(userid, passwordEncoder.encode("1"));
 	}
+
+	
 
 }

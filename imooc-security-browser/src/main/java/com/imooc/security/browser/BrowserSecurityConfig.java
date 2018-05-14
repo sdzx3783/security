@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -36,7 +37,7 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter{
 		codeFilter.setSecurityProperties(securityProperties);
 		codeFilter.afterPropertiesSet();
 		http.apply(immocSpringSocialConfigurer); 
-		http.addFilterBefore(codeFilter, UsernamePasswordAuthenticationFilter.class)
+		ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry authorizeRequests = http.addFilterBefore(codeFilter, UsernamePasswordAuthenticationFilter.class)
 		.formLogin()
 		//.loginPage("/imooc-signIn.jsp")
 		.loginPage("/authentication/require")//跟LoginUrlAuthenticationEntryPoint有关，Oa项目配置了一个MultipleAuthenticationLoginEntry
@@ -45,12 +46,11 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter{
 		.failureHandler(imoocAuthenticationFailureHandler)
 		//http.httpBasic()
 			.and()
-			.authorizeRequests()
-			.antMatchers("/authentication/require","/code/image",
-					securityProperties.getBrowser().getLoginPage(),"/platform/**","/styles/**","/js/**").permitAll()
-			.anyRequest()
-			.authenticated()
-			.and()
-			.csrf().disable();
+			.authorizeRequests();
+		authorizeRequests.antMatchers("/authentication/require","/code/image",
+					securityProperties.getBrowser().getLoginPage(),"/platform/**","/styles/**","/js/**").permitAll();
+		authorizeRequests.anyRequest().access("@rbacService.hasPermission(request, authentication)")
+		.and()
+		.csrf().disable();
 	}
 }

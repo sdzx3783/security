@@ -54,7 +54,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
 		filterChain.doFilter(request, response);
 	}
 	private void validateCode(ServletWebRequest servletWebRequest) throws ValidateCodeException, ServletRequestBindingException{
-		ImageCode imageCode=(ImageCode) sessionStrategy.getAttribute(servletWebRequest, ValidateCodeController.SESSION_KEY);
+		ValidateCode imageCode=(ValidateCode) sessionStrategy.getAttribute(servletWebRequest, ValidateCodeController.SESSION_KEY);
 		String stringParameter = ServletRequestUtils.getStringParameter(servletWebRequest.getRequest(), "imageCode");
 		if(StringUtils.isBlank(stringParameter)){
 			throw new ValidateCodeException("验证码不能为空");

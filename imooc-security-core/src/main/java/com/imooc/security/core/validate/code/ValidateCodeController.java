@@ -25,12 +25,15 @@ import com.imooc.security.core.properties.SecurityProperties;
 public class ValidateCodeController {
 	private SessionStrategy sessionStrategy=new HttpSessionSessionStrategy();
 	public static final String SESSION_KEY="SESSION_IMAGE_CODE";
+	public static final String SESSION_TIMEOUT_KEY_="SESSION_IMAGE_CODE_TIMEOUT";
 	@Autowired
 	private SecurityProperties securityProperties;
 	@GetMapping("/code/image")
 	public void createCode(HttpServletRequest request,HttpServletResponse response) throws IOException{
 		ImageCode imageCode=createImageCode(request);
-		sessionStrategy.setAttribute(new ServletWebRequest(request), SESSION_KEY, imageCode);
+		ValidateCode code=new ValidateCode(imageCode.getCode(),imageCode.getExpireTime());
+		sessionStrategy.setAttribute(new ServletWebRequest(request), SESSION_KEY, code);
+		
 		ImageIO.write(imageCode.getImage(), "JPEG", response.getOutputStream());
 	}
 

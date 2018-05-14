@@ -3,8 +3,6 @@ package com.imooc.web.config;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.FilterConfig;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;

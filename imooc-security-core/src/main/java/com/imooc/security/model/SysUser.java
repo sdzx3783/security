@@ -1,8 +1,10 @@
 package com.imooc.security.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.social.security.SocialUserDetails;
 
@@ -22,7 +24,10 @@ public class SysUser implements UserDetails,SocialUserDetails{
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return null;
+		Collection<GrantedAuthority> rtnList= new ArrayList<GrantedAuthority>();
+		//授权App服务器需要一个ROLE_USER角色才能支持授权
+		rtnList.add(new SimpleGrantedAuthority("ROLE_USER"));
+		return rtnList;
 	}
 
 	@Override
@@ -57,8 +62,8 @@ public class SysUser implements UserDetails,SocialUserDetails{
 
 	@Override
 	public String getUserId() {
-		// TODO Auto-generated method stub
 		return null;
 	}
+
 
 }

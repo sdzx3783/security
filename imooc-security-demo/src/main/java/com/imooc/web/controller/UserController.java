@@ -10,6 +10,7 @@ import javax.validation.Valid;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -69,6 +70,7 @@ public class UserController {
 		list.add(new User());
 		return list;
 	}
+	@PreAuthorize("hasAnyRole('ROLE_HR')")
 	//@RequestMapping(value="/user/{id:\\d+}",method=RequestMethod.GET)
 	@GetMapping(value="/{id:\\d+}")
 	@JsonView(User.UserDetailView.class)
