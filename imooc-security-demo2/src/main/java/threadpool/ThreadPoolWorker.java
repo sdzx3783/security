@@ -20,25 +20,26 @@ import thread.TaskResult;
  */
 public class ThreadPoolWorker {
 	private static ThreadPoolExecutor executorService=new ThreadPoolExecutor(5, 10, 60, TimeUnit.SECONDS, new ArrayBlockingQueue<>(10));
-	private static int timeout=6;
+	//private static ThreadPoolExecutor executorService=new ThreadPoolExecutor(10, 20, 60, TimeUnit.SECONDS, new ArrayBlockingQueue<>(100));
+	private static int timeout=60;
 	
-	private static Future<TaskResult> submit(Callable<TaskResult> task) {
+	/*private static Future<TaskResult> submit(Callable<TaskResult> task) {
 		return executorService.submit(task);
 	}
 	
 	private static void execute(Runnable task) {
 		executorService.execute(task);
-	}
+	}*/
 	//注释掉main方法是为了maven 打war包
 	/*public static void main(String[] args) {
 		List<Future<TaskResult>> list=new ArrayList<>();
-		for(int i=0;i<=30;i++) {
+		for(int i=0;i<30;i++) {
 			Task task = new Task(i+"", "task_"+i);
 			Future<TaskResult> submit = null;
 			try {
 				submit = executorService.submit(task);
 			} catch (RejectedExecutionException e) {
-				System.out.println("系统繁忙，请稍后再试！");
+				System.out.println("任务"+task.getId()+"处理失败，系统繁忙，请稍后再试！");
 			}
 			if(submit!=null) {
 				list.add(submit);
@@ -81,6 +82,22 @@ class  Task implements Callable<TaskResult>{
 		taskResult.setTaskid(id);
 		taskResult.setTaskName(name);
 		return taskResult;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 }

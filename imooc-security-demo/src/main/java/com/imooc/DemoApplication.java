@@ -8,10 +8,13 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.dubbo.spring.boot.annotation.EnableDubboConfiguration;
+
 @SpringBootApplication
-@ComponentScan(basePackages= {"com.imooc","com.sz"})
+@ComponentScan(basePackages= {"com.imooc","com.sz","com.dubbo"})
 @EnableTransactionManagement
 @EnableAspectJAutoProxy(proxyTargetClass=true)
+@EnableDubboConfiguration
 @RestController
 public class DemoApplication {
 	public static void main(String[] args) {
