@@ -21,6 +21,9 @@
 <logger name="com.sz">  
  	<level value="DEBUG" />
 </logger>  
+<logger name="com.sz.web.listener"> 
+	<level value="INFO" />
+</logger>
 <!--JdbcTemplate的日志输出器 -->
     <!-- <logger name="org.springframework.jdbc.core.StatementCreatorUtils"
         additivity="false" level="TRACE">

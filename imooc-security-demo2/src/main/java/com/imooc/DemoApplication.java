@@ -15,7 +15,7 @@ import com.alibaba.dubbo.spring.boot.annotation.EnableDubboConfiguration;
 @ComponentScan(basePackages= {"com.imooc","com.sz"})
 @EnableTransactionManagement
 @EnableAspectJAutoProxy(proxyTargetClass=true)
-@ServletComponentScan
+@ServletComponentScan(basePackages= {"com.imooc","com.sz"})
 @EnableDubboConfiguration
 @RestController
 public class DemoApplication {

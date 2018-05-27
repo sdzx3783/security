@@ -3,6 +3,8 @@ package com.dubbo.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class DubboDemoModel implements Serializable{
 	/**
 	 * 
@@ -30,6 +32,7 @@ public class DubboDemoModel implements Serializable{
 	public void setId(Long id) {
 		this.id = id;
 	}
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	public Date getCtime() {
 		return ctime;
 	}

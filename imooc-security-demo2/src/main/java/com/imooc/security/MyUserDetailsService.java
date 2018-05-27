@@ -11,6 +11,7 @@ import org.springframework.social.security.SocialUserDetails;
 import org.springframework.social.security.SocialUserDetailsService;
 import org.springframework.stereotype.Service;
 
+import com.imooc.dao.SysUserDao;
 import com.imooc.security.model.SysUser;
 @Service
 public class MyUserDetailsService implements UserDetailsService,SocialUserDetailsService {
@@ -18,12 +19,17 @@ public class MyUserDetailsService implements UserDetailsService,SocialUserDetail
 	private Logger logger=LoggerFactory.getLogger(MyUserDetailsService.class);
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-	
+	@Autowired
+	private SysUserDao sysUserDao;
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		logger.info("表单登录用户名:"+username);
-		return new SysUser(username, passwordEncoder.encode("1"));
-
+		//return new SysUser(username, passwordEncoder.encode("1"));
+		SysUser unique = sysUserDao.getUnique("getByAccount", username);
+		if(unique==null) {
+			throw new UsernameNotFoundException("该用户不存在！");
+		}
+		return unique;
 	}
 
 	@Override

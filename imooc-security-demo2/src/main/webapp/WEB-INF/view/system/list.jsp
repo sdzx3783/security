@@ -7,7 +7,7 @@
 <!DOCTYPE html>
 <html>
    	<head>
-      	<title id="testtitle">TEST 列表页</title>
+      	<title id="testtitle">用户列表页</title>
 	  	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	  	<link href="/styles/blue/css/bootstrap/bootstrap.min.css" rel="stylesheet">
 	  	<link href="/js/pagination/pagination.css" rel="stylesheet">
@@ -69,7 +69,14 @@
 	</head>
 <body>
 	<div id="oa_list_title" class="oa-mgb20 oa-project-title">
-	    	<h2  class='executivetitle'>Test汇总表     <span style="float: right;"> 欢迎您，<security:authentication property="principal.username" /><a href="/logout">退出登陆</a></span></h2>
+	    	<h2  class='executivetitle'>用户汇总表     <span style="float: right;"> 欢迎您，<security:authentication property="principal.username" />
+	    	 <c:if test="${empty cookie.origSwitch}">
+               <a href="/logout">退出登陆</a>
+            </c:if>
+            <c:if test="${not empty cookie.origSwitch}">
+                <a href="/logout/impersonate">退出切换用户</a>
+            </c:if>
+	    	</span></h2>
 	</div>
 	<div  >
         <div class="col-md-12">
@@ -77,13 +84,19 @@
 		         <div class="form-body">
 		        	 <div class="form-group">
 		               	<label class="control-label">名<label>&nbsp;</label>字</label>
-		               	<input name="Q_name_SL"  class="form-control" id="name" placeholder="请输入名称" type="text" value="${param['Q_name_SL']}"/>         
+		               	<input name="Q_username_SL"  class="form-control" placeholder="请输入名称" type="text" value="${param['Q_username_SL']}"/>         
 		             </div>
 		         	<div class="form-group">
-		               	<label class="control-label">日期</label>
-		               	<input onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true,maxDate:'#F{$dp.$D(\'endbirthday\')}'})" type="text" readonly="readonly" name="beginbirthday" id="beginbirthday" value="${param['beginbirthday']}" class="form-control Wdate" />
+		               	<label class="control-label">生日</label>
+		               	<input onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true,maxDate:'#F{$dp.$D(\'endbirthday\')}'})" type="text" readonly="readonly" name="Q_beginbirthday_DL" id="beginbirthday" value="${param['Q_beginbirthday_DL']}" class="form-control Wdate" />
 		               		至
-		               	<input onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false,maxDate:'%y-%M'})" type="text" name="endbirthday" id="endbirthday" readonly="readonly" value="${param['endbirthday']}" class="form-control Wdate" />
+		               	<input onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false,maxDate:'%y-%M'})" type="text" name="Q_endbirthday_DG" id="endbirthday" readonly="readonly" value="${param['Q_endbirthday_DG']}" class="form-control Wdate" />
+		            </div>
+		            <div class="form-group">
+		               	<label class="control-label">入职日期</label>
+		               	<input onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true,maxDate:'#F{$dp.$D(\'endentryDate\')}'})" type="text" readonly="readonly" name="Q_beginentryDate_DL" id="beginentryDate" value="${param['Q_beginentryDate_DL']}" class="form-control Wdate" />
+		               		至
+		               	<input onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false,maxDate:'%y-%M'})" type="text" name="Q_endentryDate_DG" id="endentryDate" readonly="readonly" value="${param['Q_endentryDate_DG']}" class="form-control Wdate" />
 		            </div>
 		            <!--  href="javascript:loadInitPageData();" -->
 		            <input type="hidden" id="page" name="page" value="${pageBean.currentPage }"/>
@@ -91,7 +104,6 @@
 		            <div class="btn-group">
 		            	<button type="button"  onclick="submitForm()" class="btn-primary">查询</button>
 		            	<button type="button" class="btn-primary"  id="btnExport">导出</button>
-		            	<button type="button" class="btn-primary" onclick="window.location.href='/platform/sz/edit'">新增</button>
 		            </div>
 		            
 		         </div>
@@ -105,9 +117,9 @@
 	      <tr>
 	        <th>序号</th>
 	        <th>姓名</th>
-	        <th>年龄</th>
-	        <th>生日</th>
-	        <th>创建日期</th>
+	        <th>账号</th>
+	        <th>手机号码</th>
+	        <th>入职时间</th>
 	        <th>操作</th>
 	       </tr>
 	       </tr>
@@ -116,19 +128,18 @@
 		    <c:choose>
 				<c:when test="${empty list }">
 					<tr>
-							<td colspan="6" style="text-align: center;">未查询到记录</td>
+							<td colspan="5" style="text-align: center;">未查询到记录</td>
 					</tr>
 				</c:when>
 				<c:otherwise>
 					<c:forEach var="item" varStatus="vs" items="${list}">
 				    	<tr><!--pageBean是查询baseDao里的setForWeb()方法将对象放进request域中的  -->
 					        <td>${(pageBean.currentPage-1)*pageBean.pageSize+vs.index+1}</td>
-					        <td>${item.name}</td>
-					        <td>${item.age}</td>
-					        <td><fmt:formatDate value="${item.birthday}" pattern="yyyy年MM月dd日" /> </td>
-					        <td><fmt:formatDate value="${item.ctime}" pattern="yyyy年MM月dd日HH点mm分ss秒" /> </td>
-					        <th><a href="edit.ht?id=${item.id }" class="btn edit">编辑</a><a href="#" onclick="javascript:return del(${item.id});" class="btn del">删除</a></th>
-					        
+					        <td>${item.username}</td>
+					        <td>${item.account}</td>
+					        <td>${item.mobile}</td>
+					        <td><fmt:formatDate value="${item.entryDate}" pattern="yyyy年MM月dd日HH点mm分ss秒" /> </td>
+					        <td><a href="/login/impersonate?username=${item.account }" class="btn edit">切换用户</a></td>
 				        </tr>
 				    </c:forEach>
 				</c:otherwise>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.imooc.security.model.SysUser">
+	<resultMap id="SysUser" type="com.imooc.security.model.SysUser">
+		<id property="userid" column="userid" jdbcType="NUMERIC"/>
+		<result property="username" column="fullname" jdbcType="VARCHAR"/>
+		<result property="account" column="account" jdbcType="VARCHAR"/>
+		<result property="password" column="password" jdbcType="VARCHAR"/>
+		<result property="email" column="email" jdbcType="VARCHAR"/>
+		<result property="mobile" column="mobile" jdbcType="VARCHAR"/>
+		<result property="entryDate" column="entrydate" jdbcType="TIMESTAMP"/>
+	</resultMap>
+
+	<sql id="columns">
+		USERID,fullname,account,password,email,mobile,entryDate
+	</sql>
+	<sql id="dynamicWhere">
+		<where>
+			<if test="@Ognl@isNotEmpty(userId)"> AND userId  =#{userId} </if>
+			<if test="@Ognl@isNotEmpty(fullname)"> AND fullname  LIKE #{fullname}  </if>
+			<if test="@Ognl@isNotEmpty(account)"> AND account  LIKE #{account}  </if>
+			<if test="@Ognl@isNotEmpty(email)"> AND email  LIKE #{email} </if>
+			<if test="@Ognl@isNotEmpty(mobile)"> AND mobile  LIKE #{mobile}  </if>
+			<if test="@Ognl@isNotEmpty(sex)"> AND sex  LIKE {sex}  </if>
+			<if test="@Ognl@isNotEmpty(beginentryDate)"> AND entryDate &gt;= #{beginentryDate,jdbcType=TIMESTAMP}</if>
+			<if test="@Ognl@isNotEmpty(endentryDate)"> AND entryDate &lt;= #{endentryDate,jdbcType=TIMESTAMP}</if>
+		</where>
+	</sql>
+		    
+	<select id="getById" parameterType="java.lang.Long" resultMap="SysUser">
+		SELECT <include refid="columns"/>
+		FROM sys_user
+		WHERE
+		USERID=#{id}
+	</select>
+	
+	<select id="getByAccount"  parameterType="java.lang.String" resultMap="SysUser">
+		SELECT <include refid="columns"/>
+		FROM sys_user   
+		where account=#{account}
+	</select>
+	<select id="getAll" resultMap="SysUser">
+		SELECT <include refid="columns"/>
+		FROM sys_user
+		<include refid="dynamicWhere"></include>
+	</select>
+	
+</mapper>
